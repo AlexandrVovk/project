@@ -1,0 +1,37 @@
+#!/bin/bash
+
+fmem=`cat /proc/meminfo`
+
+	memtotal=`echo "$fmem" | awk '/^MemTotal:/{print $2}'`
+
+	memfree=`echo "$fmem" | awk '/^MemFree:/{print $2}'`
+
+	membuffers=`echo "$fmem" | awk '/^Buffers:/{print $2}'`
+
+	memcached=`echo "$fmem" | awk '/^Cached:/{print $2}'`
+
+	memsreclaimable=`echo "$fmem" | awk '/^SReclaimable:/{print $2}'`
+
+	memshmem=`echo "$fmem" | awk '/^Shmem:/{print $2}'`
+
+let "memused = $memtotal - $memfree - $membuffers - $memcached - $memsreclaimable"
+
+	swaptotal=`echo "$fmem" | awk '/^SwapTotal:/{print $2}'`
+
+	swapfree=`echo "$fmem" | awk '/^SwapFree:/{print $2}'`
+
+	swapcached=`echo "$fmem" | awk '/^SwapCached:/{print $2}'`
+
+let "swapused = $swaptotal - $swapfree - $swapcached"
+
+echo virtual total $memtotal
+echo virtual used $memused
+echo virtual free $memfree
+echo virtual shared $memshmem
+echo virtual used $memused
+echo swap total $swaptotal
+echo swap used $swapused
+echo swap free $swapfree
+
+
+#	!./metrics
