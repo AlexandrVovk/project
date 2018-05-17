@@ -1,113 +1,124 @@
 #!/bin/bash
 
-fcpu=`awk '/^cpu /' /proc/stat`
+case "$1" in
 
-sleep 1
+cpu ) 
 
-newfcpu=`awk '/^cpu /' /proc/stat`
-
-
-	cpu_user=`echo "$fcpu" | awk '{print $2}'`
-
-	cpu_nice=`echo "$fcpu" | awk '{print $3}'`
-
-	cpu_system=`echo "$fcpu" | awk '{print $4}'`
+#====================================== metrics cpu ================================
+	fcpu=`awk '/^cpu /' /proc/stat`
 	
-	cpu_idle=`echo "$fcpu" | awk '{print $5}'`
-
-	cpu_iowait=`echo "$fcpu" | awk '{print $6}'`
-
-	cpu_irq=`echo "$fcpu" | awk '{print $7}'`
-
-	cpu_softirq=`echo "$fcpu" | awk '{print $8}'`
-
-	cpu_steal=`echo "$fcpu" | awk '{print $9}'`
+	sleep 1
 	
-	cpu_guest=`echo "$fcpu" | awk '{print $10}'`
+	newfcpu=`awk '/^cpu /' /proc/stat`
 
-	cpu_guest_nice=`echo "$fcpu" | awk '{print $11}'`
-
-(( cpu_total = $cpu_user + $cpu_nice + $cpu_system + $cpu_idle + $cpu_iowait + $cpu_irq + $cpu_softirq + $cpu_steal + $cpu_guest + $cpu_guest_nice ))
-
-        new_cpu_user=`echo "$newfcpu" | awk '{print $2}'`
-
-        new_cpu_nice=`echo "$newfcpu" | awk '{print $3}'`
-
-        new_cpu_system=`echo "$newfcpu" | awk '{print $4}'`
-
-        new_cpu_idle=`echo "$newfcpu" | awk '{print $5}'`
-
-        new_cpu_iowait=`echo "$newfcpu" | awk '{print $6}'`
-
-        new_cpu_irq=`echo "$newfcpu" | awk '{print $7}'`
-
-        new_cpu_softirq=`echo "$newfcpu" | awk '{print $8}'`
-
-        new_cpu_steal=`echo "$newfcpu" | awk '{print $9}'`
-
-        new_cpu_guest=`echo "$newfcpu" | awk '{print $10}'`
-
-        new_cpu_guest_nice=`echo "$newfcpu" | awk '{print $11}'`
-
-(( new_cpu_total = $new_cpu_user + $new_cpu_nice + $new_cpu_system + $new_cpu_idle + $new_cpu_iowait + $new_cpu_irq + $new_cpu_softirq + $new_cpu_steal + $new_cpu_guest + $new_cpu_guest_nice ))
-
-(( delta_cpu_total = $new_cpu_total - $cpu_total ))
-
-	system_cpu_idle=`echo $new_cpu_idle $cpu_idle $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
-
-	system_cpu_user=`echo $new_cpu_user $cpu_user $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'` 
-
-	system_cpu_guest=`echo  $new_cpu_guest $cpu_guest $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
-
-	system_cpu_iowait=`echo $new_cpu_iowait $cpu_iowait $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
-
-	system_cpu_stolen=`echo $new_cpu_steal $cpu_steal $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
-
-	system_cpu_system=`echo $new_cpu_system $cpu_system $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
-
-echo system.cpu.idle $system_cpu_idle
-echo system.cpu.user $system_cpu_user
-echo system.cpu.guest $system_cpu_guest
-echo system.cpu.iowait $system_cpu_iowait
-echo system.cpu.stolen $system_cpu_stolen
-echo system.cpu.system $system_cpu_system
-
-
-
+	
+		cpu_user=`echo "$fcpu" | awk '{print $2}'`
+	
+		cpu_nice=`echo "$fcpu" | awk '{print $3}'`
+	
+		cpu_system=`echo "$fcpu" | awk '{print $4}'`
+		
+		cpu_idle=`echo "$fcpu" | awk '{print $5}'`
+	
+		cpu_iowait=`echo "$fcpu" | awk '{print $6}'`
+	
+		cpu_irq=`echo "$fcpu" | awk '{print $7}'`
+	
+		cpu_softirq=`echo "$fcpu" | awk '{print $8}'`
+	
+		cpu_steal=`echo "$fcpu" | awk '{print $9}'`
+		
+		cpu_guest=`echo "$fcpu" | awk '{print $10}'`
+	
+		cpu_guest_nice=`echo "$fcpu" | awk '{print $11}'`
+	
+	(( cpu_total = $cpu_user + $cpu_nice + $cpu_system + $cpu_idle + $cpu_iowait + $cpu_irq + $cpu_softirq + $cpu_steal + $cpu_guest + $cpu_guest_nice ))
+	
+	        new_cpu_user=`echo "$newfcpu" | awk '{print $2}'`
+	
+	        new_cpu_nice=`echo "$newfcpu" | awk '{print $3}'`
+	
+	        new_cpu_system=`echo "$newfcpu" | awk '{print $4}'`
+	
+	        new_cpu_idle=`echo "$newfcpu" | awk '{print $5}'`
+	
+	        new_cpu_iowait=`echo "$newfcpu" | awk '{print $6}'`
+	
+	        new_cpu_irq=`echo "$newfcpu" | awk '{print $7}'`
+	
+	        new_cpu_softirq=`echo "$newfcpu" | awk '{print $8}'`
+	
+	        new_cpu_steal=`echo "$newfcpu" | awk '{print $9}'`
+	
+	        new_cpu_guest=`echo "$newfcpu" | awk '{print $10}'`
+	
+	        new_cpu_guest_nice=`echo "$newfcpu" | awk '{print $11}'`
+	
+	(( new_cpu_total = $new_cpu_user + $new_cpu_nice + $new_cpu_system + $new_cpu_idle + $new_cpu_iowait + $new_cpu_irq + $new_cpu_softirq + $new_cpu_steal + $new_cpu_guest + $new_cpu_guest_nice ))
+	
+	(( delta_cpu_total = $new_cpu_total - $cpu_total ))
+	
+		system_cpu_idle=`echo $new_cpu_idle $cpu_idle $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
+	
+		system_cpu_user=`echo $new_cpu_user $cpu_user $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'` 
+	
+		system_cpu_guest=`echo  $new_cpu_guest $cpu_guest $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
+	
+		system_cpu_iowait=`echo $new_cpu_iowait $cpu_iowait $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
+	
+		system_cpu_stolen=`echo $new_cpu_steal $cpu_steal $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
+	
+		system_cpu_system=`echo $new_cpu_system $cpu_system $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
+	
+	echo system.cpu.idle $system_cpu_idle
+	echo system.cpu.user $system_cpu_user
+	echo system.cpu.guest $system_cpu_guest
+	echo system.cpu.iowait $system_cpu_iowait
+	echo system.cpu.stolen $system_cpu_stolen
+	echo system.cpu.system $system_cpu_system
+#================================= end metrics cpu ===============================
+;;
+	
+	
+mem )
 #================================= metrics mem ===================================
-#fmem=`cat /proc/meminfo`
-#
-#	memtotal=`echo "$fmem" | awk '/^MemTotal:/{print $2}'`
-#
-#	memfree=`echo "$fmem" | awk '/^MemFree:/{print $2}'`
-#
-#	membuffers=`echo "$fmem" | awk '/^Buffers:/{print $2}'`
-#
-#	memcached=`echo "$fmem" | awk '/^Cached:/{print $2}'`
-#
-#	memsreclaimable=`echo "$fmem" | awk '/^SReclaimable:/{print $2}'`
-#
-#	memshmem=`echo "$fmem" | awk '/^Shmem:/{print $2}'`
-#
-#let "memused = $memtotal - $memfree - $membuffers - $memcached - $memsreclaimable"
-#
-#	swaptotal=`echo "$fmem" | awk '/^SwapTotal:/{print $2}'`
-#
-#	swapfree=`echo "$fmem" | awk '/^SwapFree:/{print $2}'`
-#
-#	swapcached=`echo "$fmem" | awk '/^SwapCached:/{print $2}'`
-#
-#let "swapused = $swaptotal - $swapfree - $swapcached"
-#
-#echo virtual total $memtotal
-#echo virtual used $memused
-#echo virtual free $memfree
-#echo virtual shared $memshmem
-#echo virtual used $memused
-#echo swap total $swaptotal
-#echo swap used $swapused
-#echo swap free $swapfree
+	fmem=`cat /proc/meminfo`
+	
+		memtotal=`echo "$fmem" | awk '/^MemTotal:/{print $2}'`
+	
+		memfree=`echo "$fmem" | awk '/^MemFree:/{print $2}'`
+	
+		membuffers=`echo "$fmem" | awk '/^Buffers:/{print $2}'`
+	
+		memcached=`echo "$fmem" | awk '/^Cached:/{print $2}'`
+	
+		memsreclaimable=`echo "$fmem" | awk '/^SReclaimable:/{print $2}'`
+	
+		memshmem=`echo "$fmem" | awk '/^Shmem:/{print $2}'`
+	
+	(( memused = $memtotal - $memfree - $membuffers - $memcached - $memsreclaimable ))
+	
+		swaptotal=`echo "$fmem" | awk '/^SwapTotal:/{print $2}'`
+	
+		swapfree=`echo "$fmem" | awk '/^SwapFree:/{print $2}'`
+	
+		swapcached=`echo "$fmem" | awk '/^SwapCached:/{print $2}'`
+	
+	(( swapused = $swaptotal - $swapfree - $swapcached ))
+	
+	echo virtual total $memtotal
+	echo virtual used $memused
+	echo virtual free $memfree
+	echo virtual shared $memshmem
+	echo virtual used $memused
+	echo swap total $swaptotal
+	echo swap used $swapused
+	echo swap free $swapfree
 #================================= end metrics mem ==============================
+;;
 
+* ) echo You type something wrong, please, type cpu or mem ;;
 
-#	!./metrics
+esac
+
+exit 0
