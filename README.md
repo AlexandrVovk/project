@@ -1,7 +1,13 @@
 Project command line script for Linux based OS
 ==============================================
 
-This project contains a script which prints basic information about your linux server to console.
+This project contains a bash script which prints basic information about your linux server to console.
+
+Prerequisites
+-------------
+
+This script works on linux based OS.
+Run script in bash.
 
 
 Get script
