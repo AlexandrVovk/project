@@ -17,11 +17,19 @@ You can get this script by clone repository
 
 git clone https://github.com/AlexandrVovk/project.git
 
+You can get this script from Docker Hub
+
+docker pull mailalexandrvovk/project
+
+
 
 Running the script
 ------------------
 
+- Shell 
+
 To execute the script from script directory, type:
+
 ./metrics [arg]
 
 [arg] - script knows two arguments - cpu or mem
@@ -29,6 +37,14 @@ To execute the script from script directory, type:
 ./metrics cpu - it shows information about cpu usage at that momemt
 
 ./metrics mem - it shows information about memory usage at that momemt 
+
+- Docker
+
+docker run  mailalexandrvovk/project:docker-bash-metrics
+
+or
+
+docker run mailalexandrvovk/project:docker-bash-metrics bash -c "./metrics cpu; ./metrics mem"
 
 
 Author
