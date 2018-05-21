@@ -32,26 +32,26 @@ To execute the script from script directory, type:
 
 ./metrics [arg]
 
-[arg] - script knows two arguments - cpu or mem
+[arg] - script knows arguments - cpu, mem, all
 
 ./metrics cpu - it shows information about cpu usage at that momemt
 
 ./metrics mem - it shows information about memory usage at that momemt 
 
+./metrics all - it shows both information about cpu usage and memory usage
+
 - Docker
 
-cpu metrics, type:
+type:
 
 docker run mailalexandrvovk/project:docker-metrics bash -c "./metrics cpu"
 
-mem metrics, type:
-
 docker run mailalexandrvovk/project:docker-metrics bash -c "./metrics mem"
 
-cpu & mem metrics, type:
-
 docker run mailalexandrvovk/project:docker-metrics bash -c "./metrics all"
+
 or
+
 docker run mailalexandrvovk/project:docker-metrics
 
 
