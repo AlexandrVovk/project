@@ -40,11 +40,19 @@ To execute the script from script directory, type:
 
 - Docker
 
-docker run  mailalexandrvovk/project:docker-bash-metrics
+cpu metrics, type:
 
+docker run mailalexandrvovk/project:docker-metrics bash -c "./metrics cpu"
+
+mem metrics, type:
+
+docker run mailalexandrvovk/project:docker-metrics bash -c "./metrics mem"
+
+cpu & mem metrics, type:
+
+docker run mailalexandrvovk/project:docker-metrics bash -c "./metrics all"
 or
-
-docker run mailalexandrvovk/project:docker-bash-metrics bash -c "./metrics cpu; ./metrics mem"
+docker run mailalexandrvovk/project:docker-metrics
 
 
 Author
