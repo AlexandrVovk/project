@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-case "$1" in
 
-cpu ) 
-
+cpu_function ()
+{
 #====================================== metrics cpu ================================
 	fcpu=`awk '/^cpu /' /proc/stat`
 	
@@ -11,7 +10,7 @@ cpu )
 	
 	newfcpu=`awk '/^cpu /' /proc/stat`
 
-	
+#get each of cpu values 	
 		cpu_user=`echo "$fcpu" | awk '{print $2}'`
 	
 		cpu_nice=`echo "$fcpu" | awk '{print $3}'`
@@ -31,9 +30,13 @@ cpu )
 		cpu_guest=`echo "$fcpu" | awk '{print $10}'`
 	
 		cpu_guest_nice=`echo "$fcpu" | awk '{print $11}'`
-	
+
+#sum all cpu values	
+
 	(( cpu_total = $cpu_user + $cpu_nice + $cpu_system + $cpu_idle + $cpu_iowait + $cpu_irq + $cpu_softirq + $cpu_steal + $cpu_guest + $cpu_guest_nice ))
 	
+#get each of cpu values after one second
+
 	        new_cpu_user=`echo "$newfcpu" | awk '{print $2}'`
 	
 	        new_cpu_nice=`echo "$newfcpu" | awk '{print $3}'`
@@ -53,11 +56,16 @@ cpu )
 	        new_cpu_guest=`echo "$newfcpu" | awk '{print $10}'`
 	
 	        new_cpu_guest_nice=`echo "$newfcpu" | awk '{print $11}'`
-	
+
+#sum all cpu new values
+
 	(( new_cpu_total = $new_cpu_user + $new_cpu_nice + $new_cpu_system + $new_cpu_idle + $new_cpu_iowait + $new_cpu_irq + $new_cpu_softirq + $new_cpu_steal + $new_cpu_guest + $new_cpu_guest_nice ))
-	
+
+#calculate difference between cpu and new_cpu sum	
+
 	(( delta_cpu_total = $new_cpu_total - $cpu_total ))
 	
+#calculate cpu usage during one second in percents
 		system_cpu_idle=`echo $new_cpu_idle $cpu_idle $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'`
 	
 		system_cpu_user=`echo $new_cpu_user $cpu_user $delta_cpu_total | awk '{printf "%.1f\n", ($1 - $2)/$3*100}'` 
@@ -77,13 +85,15 @@ cpu )
 	echo system.cpu.stolen $system_cpu_stolen
 	echo system.cpu.system $system_cpu_system
 #================================= end metrics cpu ===============================
-;;
+}
 	
-	
-mem )
+mem_function ()
+{
 #================================= metrics mem ===================================
 	fmem=`cat /proc/meminfo`
-	
+
+#get each of mem values
+
 		memtotal=`echo "$fmem" | awk '/^MemTotal:/{print $2}'`
 	
 		memfree=`echo "$fmem" | awk '/^MemFree:/{print $2}'`
@@ -95,7 +105,9 @@ mem )
 		memsreclaimable=`echo "$fmem" | awk '/^SReclaimable:/{print $2}'`
 	
 		memshmem=`echo "$fmem" | awk '/^Shmem:/{print $2}'`
-	
+
+#calculate used memory	
+
 	(( memused = $memtotal - $memfree - $membuffers - $memcached - $memsreclaimable ))
 	
 		swaptotal=`echo "$fmem" | awk '/^SwapTotal:/{print $2}'`
@@ -103,7 +115,9 @@ mem )
 		swapfree=`echo "$fmem" | awk '/^SwapFree:/{print $2}'`
 	
 		swapcached=`echo "$fmem" | awk '/^SwapCached:/{print $2}'`
-	
+
+#calculate used swap	
+
 	(( swapused = $swaptotal - $swapfree - $swapcached ))
 	
 	echo virtual total $memtotal
@@ -115,9 +129,13 @@ mem )
 	echo swap used $swapused
 	echo swap free $swapfree
 #================================= end metrics mem ==============================
-;;
+}
 
-* ) echo You type something wrong, please, type cpu or mem ;;
+case "$1" in 
+	cpu ) cpu_function;;
+	mem ) mem_function;;
+	all ) cpu_function; mem_function;;
+	* ) echo You type something wrong, please, type cpu or mem ;;
 
 esac
 
