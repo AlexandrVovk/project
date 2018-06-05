@@ -19,7 +19,7 @@ git clone https://github.com/AlexandrVovk/project.git
 
 You can get this script from Docker Hub
 
-docker pull mailalexandrvovk/project
+docker pull mailalexandrvovk/project:docker-metrics
 
 
 
